@@ -9,3 +9,6 @@ temp = df['Content Rating'].value_counts()
 ratio = temp['Teen'] / temp['Everyone 10+']
 print('Cоотношение количества приложений (Teen / Everyone 10+):', round(ratio, 2))
 
+temp = df.groupby(by = 'Type')['Rating'].mean()
+print('Средний рейтинг платных приложений:', round(temp['Paid'], 2))
+print('Разница рейтинга платных и бесплатных приложений:', round(temp['Paid'] - temp['Free'], 2))
