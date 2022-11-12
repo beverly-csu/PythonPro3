@@ -1,0 +1,4 @@
+1474
+Varies with device    1695
+Name: Size, dtype: int64
+99.0
