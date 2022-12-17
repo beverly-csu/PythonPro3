@@ -21,4 +21,17 @@ def fill_age(row):
         return row['Age']
 
 df['Age'] = df.apply(fill_age, axis=1)
-# df.info()
+
+df['Embarked'].fillna('S', inplace=True)
+
+def fill_sex(sex):
+    if sex == 'male':
+        return 0
+    else:
+        return 1
+
+df['Sex'] = df['Sex'].apply(fill_sex)
+
+# print(df['Embarked'].value_counts())
+df[list(pd.get_dummies(df['Embarked']).columns)] = pd.get_dummies(df['Embarked'])
+df.drop('Embarked', axis=1, inplace=True)
