@@ -35,3 +35,5 @@ df['Sex'] = df['Sex'].apply(fill_sex)
 # print(df['Embarked'].value_counts())
 df[list(pd.get_dummies(df['Embarked']).columns)] = pd.get_dummies(df['Embarked'])
 df.drop('Embarked', axis=1, inplace=True)
+
+df.info()
