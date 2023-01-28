@@ -16,8 +16,8 @@ def detect_english(langs):
 df['english'] = df['langs'].apply(detect_english)
 
 to_drop = [
-    'graduation', 'id', 'bdate', 'langs', 'city',
-    'life_main', 'people_main', 'last_seen', 'career_start',
+    'graduation', 'id', 'bdate', 'langs', 'city', 
+    'last_seen', 'career_start',
     'career_end', 'occupation_name'
 ]
 
@@ -61,6 +61,27 @@ def replace_occupation_type(occupation_type):
         return 1
 df['occupation_type'] = df['occupation_type'].apply(replace_occupation_type)
 
+def fix_sex(sex):
+    return sex - 1
+
+df['sex'] = df['sex'].apply(fix_sex)
+
+def fix_people_main(people_main):
+    if people_main == '3' or people_main == '4':
+        return 1
+    else:
+        return 0
+
+df['people_main'] = df['people_main'].apply(fix_people_main)
+
+def fix_life_main(life_main):
+    if life_main in ['0', '6', '7']:
+        return 1
+    else:
+        return 0
+
+df['life_main'] = df['life_main'].apply(fix_life_main)
+
 df.drop(to_drop, axis=1, inplace=True)
 
 from sklearn.model_selection import train_test_split
@@ -77,7 +98,7 @@ sc = StandardScaler()
 x_train = sc.fit_transform(x_train)
 x_test = sc.transform(x_test)
 
-classifier = KNeighborsClassifier(n_neighbors=5)
+classifier = KNeighborsClassifier(n_neighbors=11)
 classifier.fit(x_train, y_train)
 
 y_pred = classifier.predict(x_test)
