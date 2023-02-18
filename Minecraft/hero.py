@@ -1,4 +1,17 @@
 KEY_CHANGE_CAMERA = 'c'
+KEY_FORWARD = 'w'
+KEY_BACK = 's'
+KEY_LEFT = 'a'
+KEY_RIGHT = 'd'
+
+KEY_TURN_LEFT = 'n'
+KEY_TURN_RIGHT = 'm'
+
+KEY_UP = 'e'
+KEY_DOWN = 'q'
+
+KEY_BUILD = 'b'
+KEY_DESTROY = 'v'
 
 
 class Hero:
