@@ -101,8 +101,36 @@ class Hero:
         angle = (self.hero.getH() + 180) % 360
         self.move_to(angle)
 
+    def turn_left(self):
+        heading = self.hero.getH()
+        heading += 10
+        self.hero.setH(heading)
+    
+    def turn_right(self):
+        heading = self.hero.getH()
+        heading -= 10
+        self.hero.setH(heading)
+
+    def up(self):
+        if self.mode:
+            z = self.hero.getZ()
+            self.hero.setZ(z + 1)
+
+    def down(self):
+        if self.mode:
+            z = self.hero.getZ()
+            self.hero.setZ(z - 1)
+
     def acceptEvents(self):
         base.accept(KEY_CHANGE_CAMERA, self.cameraChange)
+
+        base.accept(KEY_DOWN, self.down)
+        base.accept(KEY_UP, self.up)
+
+        base.accept(KEY_TURN_LEFT, self.turn_left)
+        base.accept(KEY_TURN_LEFT + '-repeat', self.turn_left)
+        base.accept(KEY_TURN_RIGHT, self.turn_right)
+        base.accept(KEY_TURN_RIGHT + '-repeat', self.turn_right)
 
         base.accept(KEY_FORWARD, self.forward)
         base.accept(KEY_FORWARD + '-repeat', self.forward)
