@@ -1,4 +1,5 @@
 KEY_CHANGE_CAMERA = 'c'
+KEY_CHANGE_MODE = 'z'
 KEY_FORWARD = 'w'
 KEY_BACK = 's'
 KEY_LEFT = 'a'
@@ -81,9 +82,23 @@ class Hero:
         pos = self.look_at(angle)
         self.hero.setPos(pos)
 
+    def try_move(self, angle):
+        pos = self.look_at(angle)
+        if self.land.isEmpty(pos):
+            pos = self.land.findHighestEmpty(pos)
+            self.hero.setPos(pos)
+        else:
+            x, y, z = pos
+            z += 1
+            pos = (x, y, z)
+            if self.land.isEmpty(pos):
+                self.hero.setPos(pos)
+        
     def move_to(self, angle):
         if self.mode:
             self.just_move(angle)
+        else:
+            self.try_move(angle)
 
     def forward(self):
         angle = self.hero.getH() % 360
@@ -121,8 +136,31 @@ class Hero:
             z = self.hero.getZ()
             self.hero.setZ(z - 1)
 
+    def change_mode(self):
+        self.mode = not self.mode
+
+    def build(self):
+        angle = self.hero.getH() % 360
+        pos = self.look_at(angle)
+        if self.mode:
+            self.land.addBlock(pos)
+        else:
+            self.land.addBlockFrom(pos)
+
+    def destroy(self):
+        angle = self.hero.getH() % 360
+        pos = self.look_at(angle)
+        if self.mode:
+            self.land.delBlock(pos)
+        else:
+            self.land.delBlockFrom(pos)
+
     def acceptEvents(self):
         base.accept(KEY_CHANGE_CAMERA, self.cameraChange)
+        base.accept(KEY_CHANGE_MODE, self.change_mode)
+
+        base.accept(KEY_BUILD, self.build)
+        base.accept(KEY_DESTROY, self.destroy)
 
         base.accept(KEY_DOWN, self.down)
         base.accept(KEY_UP, self.up)

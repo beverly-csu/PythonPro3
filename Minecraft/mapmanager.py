@@ -19,6 +19,7 @@ class Mapmanager:
         block.setColor(color)
         block.setPos(position)
         block.reparentTo(self.land)
+        block.setTag('at', str(position))
 
     def clear(self):
         self.land.removeNode()
@@ -44,3 +45,36 @@ class Mapmanager:
             return self.colors[z]
         else:
             return self.colors[-1]
+        
+    def findBlocks(self, pos):
+        return self.land.findAllMatches('=at=' + str(pos))
+    
+    def isEmpty(self, pos):
+        blocks = self.findBlocks(pos)
+        if blocks:
+            return False
+        else:
+            return True
+        
+    def findHighestEmpty(self, pos):
+        x, y, z = pos
+        z = 0
+        while not self.isEmpty((x, y, z)):
+            z += 1
+        return (x, y, z)
+    
+    def delBlock(self, pos):
+        blocks = self.findBlocks(pos)
+        for block in blocks:
+            block.removeNode()
+
+    def addBlockFrom(self, pos):
+        _, _, z = pos
+        new_pos = self.findHighestEmpty(pos)
+        if new_pos[2] <= z + 1:
+            self.addBlock(new_pos)
+
+    def delBlockFrom(self, pos):
+        x, y, z = self.findHighestEmpty(pos)
+        pos = (x, y, z - 1)
+        self.delBlock(pos)
