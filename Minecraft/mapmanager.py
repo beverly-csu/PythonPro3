@@ -1,3 +1,5 @@
+import pickle
+
 class Mapmanager:
     def __init__(self):
         self.model = 'block.egg'
@@ -78,3 +80,21 @@ class Mapmanager:
         x, y, z = self.findHighestEmpty(pos)
         pos = (x, y, z - 1)
         self.delBlock(pos)
+
+    def saveMap(self):
+        blocks = self.land.getChildren()
+        with open('map.dat', 'wb') as file:
+            pickle.dump(len(blocks), file)
+            for block in blocks:
+                pos = block.getPos()
+                pos = tuple(map(int, pos))
+                pickle.dump(pos, file)
+
+    def loadMap(self):
+        self.clear()
+        with open('map.dat', 'rb') as file:
+            count = pickle.load(file)
+            for _ in range(count):
+                pos = pickle.load(file)
+                self.addBlock(pos)
+                

@@ -178,3 +178,6 @@ class Hero:
         base.accept(KEY_LEFT + '-repeat', self.left)
         base.accept(KEY_RIGHT, self.right)
         base.accept(KEY_RIGHT + '-repeat', self.right)
+
+        base.accept('k', self.land.saveMap)
+        base.accept('l', self.land.loadMap)
